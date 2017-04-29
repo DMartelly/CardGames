@@ -15,7 +15,7 @@ import java.util.Stack;
 public class FreeCell {
     private List<LinkedList<Card>> playingField = new ArrayList<>(8);
     private Card[] freeCells = new Card[4];
-    private List<Stack<Card>> foundations = new ArrayList<>(4);
+    private List<CardStack> foundations = new ArrayList<>(4);
 
 
     public boolean isGameReady() {
