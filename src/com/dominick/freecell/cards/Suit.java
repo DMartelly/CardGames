@@ -5,16 +5,23 @@ package com.dominick.freecell.cards;
  *
  * @author Dominick Martelly
  */
-enum Suit {
-    HEART(true), SPADE(false), DIAMOND(true), CLUBS(false);
+public enum Suit {
+    HEART(true, 'H'), SPADE(false, 'S'), DIAMOND(true, 'D'), CLUBS(false, 'C');
 
-    boolean red;
+    private final boolean isRED;
+    private final char displayCharacter;
 
-    Suit(boolean isRed) {
-        this.red = isRed;
+    Suit(boolean isRed, char c) {
+        this.isRED = isRed;
+        this.displayCharacter = c;
     }
 
-    boolean isRed() {
-        return red;
+    public boolean isRed() {
+        return isRED;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(displayCharacter);
     }
 }

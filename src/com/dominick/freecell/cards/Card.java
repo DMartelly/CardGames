@@ -67,4 +67,9 @@ public class Card {
     public Rank getRank() {
         return rank;
     }
+
+    @Override
+    public String toString() {
+        return this.getRank().toString() + "" + this.getSuit().toString();
+    }
 }
