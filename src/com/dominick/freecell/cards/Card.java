@@ -9,54 +9,63 @@ public class Card {
     private Suit suit;
     private Rank rank;
 
-    Card(char rank, char suit) {
+    public Card(int rank, int suit) {
         switch (rank) {
-            case '0':
+            case 0:
                 this.rank = Rank.ACE;
-            case '1':
+                break;
+            case 1:
                 this.rank = Rank.ONE;
-            case '2':
+                break;
+            case 2:
                 this.rank = Rank.TWO;
-            case '3':
+                break;
+            case 3:
                 this.rank = Rank.THREE;
-            case '4':
+                break;
+            case 4:
                 this.rank = Rank.FOUR;
-            case '5':
+                break;
+            case 5:
                 this.rank = Rank.FIVE;
-            case '6':
+                break;
+            case 6:
                 this.rank = Rank.SIX;
-            case '7':
+                break;
+            case 7:
                 this.rank = Rank.SEVEN;
-            case '8':
+                break;
+            case 8:
                 this.rank = Rank.EIGHT;
-            case '9':
+                break;
+            case 9:
                 this.rank = Rank.NINE;
-            case 't':
-            case 'T':
+                break;
+            case 10:
                 this.rank = Rank.TEN;
-            case 'j':
-            case 'J':
+                break;
+            case 11:
                 this.rank = Rank.JACK;
-            case 'q':
-            case 'Q':
+                break;
+            case 12:
                 this.rank = Rank.QUEEN;
-            case 'k':
-            case 'K':
+                break;
+            case 13:
                 this.rank = Rank.KING;
-            case 'a':
-            case 'A':
-                this.rank = Rank.ACE;
         }
 
         switch (suit) {
-            case 'h':
-                this.suit = Suit.HEART;
-            case 'd':
-                this.suit = Suit.DIAMOND;
-            case 's':
-                this.suit = Suit.SPADE;
-            case 'c':
+            case 0:
                 this.suit = Suit.CLUBS;
+                break;
+            case 1:
+                this.suit = Suit.DIAMOND;
+                break;
+            case 2:
+                this.suit = Suit.HEART;
+                break;
+            case 3:
+                this.suit = Suit.SPADE;
         }
     }
 
