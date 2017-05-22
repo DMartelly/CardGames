@@ -23,16 +23,24 @@ class FreeCell {
         }
     }
 
-    void setThePlayingField(long gameNumber) {
-        for (CardStack cardStack : playingField) {
-            cardStack.clear();
-        }
+    void newGame(long gameNumber) {
+        cleanBoard();
         List<Card> deckOfCards = generateDeckOfCards();
         Random r = new Random(gameNumber);
         for (int i = 0; i < 52; i++) {
             int j = r.nextInt(deckOfCards.size());
             j %= deckOfCards.size();
             playingField.get(i % 8).add(deckOfCards.remove(j));
+        }
+    }
+
+    private void cleanBoard() {
+        freeCells = new Card[4];
+        for (FoundationStack foundation : foundations) {
+            foundation.clear();
+        }
+        for (CardStack cardStack : playingField) {
+            cardStack.clear();
         }
     }
 
@@ -91,6 +99,26 @@ class FreeCell {
         return true;
     }
 
+    boolean moveToFoundation(int column, int foundation) {
+        if (column < 0 || column > 7) {
+            System.out.println("Invalid column");
+            return false;
+        }
+        if (foundation < 0 || foundation > 3) {
+            System.out.println("Invalid Foundation location");
+            return false;
+        }
+        if (playingField.get(column).isEmpty()) {
+            System.out.println("No Card Found");
+        }
+        Card currCard = playingField.get(column).peek();
+        if (foundations.get(foundation).pushCard(currCard)) {
+            playingField.get(column).pop();
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         StringBuilder board = new StringBuilder();
@@ -126,4 +154,5 @@ class FreeCell {
         }
         return board.toString();
     }
+
 }

@@ -11,11 +11,12 @@ import java.util.Stack;
  */
 class FoundationStack extends Stack<Card> {
 
-    @Override
-    public Card push(Card item) {
-        if (canStack(item))
-            return super.push(item);
-        return item;
+    boolean pushCard(Card item) {
+        if (canStack(item)) {
+            super.push(item);
+            return true;
+        }
+        return false;
     }
 
     private boolean canStack(Card cardToAdd) {

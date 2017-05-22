@@ -8,10 +8,10 @@ package com.dominick.freecell.game;
 class Driver {
     public static void main(String[] args) {
         FreeCell myFreeCell = new FreeCell();
-        myFreeCell.setThePlayingField(11982);
+        myFreeCell.newGame(11982);
         System.out.println(myFreeCell);
 
-        myFreeCell.setThePlayingField(982);
+        myFreeCell.newGame(982);
         System.out.println(myFreeCell);
 
         System.out.println(myFreeCell.isGameReady());
@@ -25,6 +25,11 @@ class Driver {
         System.out.println(myFreeCell);
 
         System.out.println(myFreeCell.moveToFreeCell(3, 1) ? "Move Succeeded" : "Move Failed");
+        System.out.println(myFreeCell);
+
+        System.out.println(myFreeCell.moveToFoundation(3, 1) ? "Move Succeeded" : "Move Failed");
+        System.out.println(myFreeCell.moveToFoundation(0, 2) ? "Move Succeeded" : "Move Failed");
+        System.out.println(myFreeCell.moveToFoundation(1, 3) ? "Move Succeeded" : "Move Failed");
         System.out.println(myFreeCell);
     }
 }
