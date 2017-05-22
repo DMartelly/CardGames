@@ -24,6 +24,9 @@ class FreeCell {
     }
 
     void setThePlayingField(long gameNumber) {
+        for (CardStack cardStack : playingField) {
+            cardStack.clear();
+        }
         List<Card> deckOfCards = generateDeckOfCards();
         Random r = new Random(gameNumber);
         for (int i = 0; i < 52; i++) {
@@ -45,12 +48,12 @@ class FreeCell {
 
     boolean isGameReady() {
         for (int i = 0; i < 4; i++) {
-            if (playingField.get(i).size() != 8) {
+            if (playingField.get(i).size() != 7) {
                 return false;
             }
         }
         for (int i = 4; i < 8; i++) {
-            if (playingField.get(i).size() != 7) {
+            if (playingField.get(i).size() != 6) {
                 return false;
             }
         }

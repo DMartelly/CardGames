@@ -17,9 +17,14 @@ class Driver {
         System.out.println(myFreeCell.isGameReady());
 
         System.out.println(myFreeCell.moveToFreeCell(0, 0) ? "Move Succeeded" : "Move Failed");
+        System.out.println(myFreeCell);
+
+        System.out.println(myFreeCell.isGameReady());
 
         System.out.println(myFreeCell.moveToFreeCell(1, 0) ? "Move Succeeded" : "Move Failed");
+        System.out.println(myFreeCell);
 
         System.out.println(myFreeCell.moveToFreeCell(3, 1) ? "Move Succeeded" : "Move Failed");
+        System.out.println(myFreeCell);
     }
 }
