@@ -3,8 +3,8 @@ package com.dominick.freecell.game;
 import com.dominick.freecell.cards.Card;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -12,13 +12,38 @@ import java.util.Stack;
  *
  * @author Dominick Martelly
  */
-public class FreeCell {
-    private List<LinkedList<Card>> playingField = new ArrayList<>(8);
+class FreeCell {
+    private List<CardStack> playingField = new ArrayList<>(8);
     private Card[] freeCells = new Card[4];
-    private List<CardStack> foundations = new ArrayList<>(4);
+    private List<FoundationStack> foundations = new ArrayList<>(4);
 
+    FreeCell() {
+        for (int i = 0; i < 8; i++) {
+            playingField.add(new CardStack());
+        }
+    }
 
-    public boolean isGameReady() {
+    void setThePlayingField(long gameNumber) {
+        List<Card> deckOfCards = generateDeckOfCards();
+        Random r = new Random(gameNumber);
+        for (int i = 0; i < 52; i++) {
+            int j = r.nextInt(deckOfCards.size());
+            j %= deckOfCards.size();
+            playingField.get(i % 8).add(deckOfCards.remove(j));
+        }
+    }
+
+    private List<Card> generateDeckOfCards() {
+        List<Card> deckOfCards = new ArrayList<>();
+        for (int rank = 0; rank < 13; rank++) {
+            for (int suit = 0; suit < 4; suit++) {
+                deckOfCards.add(new Card(rank, suit));
+            }
+        }
+        return deckOfCards;
+    }
+
+    boolean isGameReady() {
         for (int i = 0; i < 4; i++) {
             if (playingField.get(i).size() != 8) {
                 return false;
@@ -43,18 +68,23 @@ public class FreeCell {
         return true;
     }
 
-    /**
-     * Moves a card to a FreeCell position
-     *
-     * @param c the card to move
-     * @param i the FreeCell location
-     * @return if the move succeeded
-     */
-    boolean moveToFreeCell(Card c, int i) {
-        if (freeCells[i] != null) {
+    boolean moveToFreeCell(int column, int freeCell) {
+        if (column < 0 || column > 7) {
+            System.out.println("Invalid column");
             return false;
         }
-        freeCells[i] = c;
+        if (freeCell < 0 || freeCell > 3) {
+            System.out.println("Invalid FreeCell location");
+            return false;
+        }
+        if (playingField.get(column).isEmpty()) {
+            System.out.println("No Card Found");
+        }
+        if (freeCells[freeCell] != null) {
+            System.out.println("Invalid FreeCell location");
+            return false;
+        }
+        freeCells[freeCell] = playingField.get(column).pop();
         return true;
     }
 
@@ -77,13 +107,15 @@ public class FreeCell {
             board.append(" ");
         }
         board.append("\n\n");
-
-        for (int i = 0; i < 8; i++) {
+        boolean cont = true;
+        for (int i = 0; cont; i++) {
+            cont = false;
             for (int j = 0; j < 8; j++) {
                 try {
                     board.append(playingField.get(j).get(i));
+                    cont = true;
                 } catch (IndexOutOfBoundsException ignored) {
-                    board.append("__");
+                    board.append("  ");
                 }
                 board.append(" ");
             }

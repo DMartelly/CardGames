@@ -5,9 +5,21 @@ package com.dominick.freecell.game;
  *
  * @author Dominick Martelly
  */
-public class Driver {
+class Driver {
     public static void main(String[] args) {
         FreeCell myFreeCell = new FreeCell();
+        myFreeCell.setThePlayingField(11982);
         System.out.println(myFreeCell);
+
+        myFreeCell.setThePlayingField(982);
+        System.out.println(myFreeCell);
+
+        System.out.println(myFreeCell.isGameReady());
+
+        System.out.println(myFreeCell.moveToFreeCell(0, 0) ? "Move Succeeded" : "Move Failed");
+
+        System.out.println(myFreeCell.moveToFreeCell(1, 0) ? "Move Succeeded" : "Move Failed");
+
+        System.out.println(myFreeCell.moveToFreeCell(3, 1) ? "Move Succeeded" : "Move Failed");
     }
 }
