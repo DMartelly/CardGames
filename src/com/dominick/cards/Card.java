@@ -1,4 +1,4 @@
-package com.dominick.freecell.cards;
+package com.dominick.cards;
 
 /**
  * Created by Dominick Martelly on 4/28/2017 at 10:54 PM.

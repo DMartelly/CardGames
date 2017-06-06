@@ -1,4 +1,4 @@
-package com.dominick.freecell.game;
+package com.dominick.games.freecell;
 
 /**
  * Created by Dominick Martelly on 4/29/2017 at 12:20 AM.

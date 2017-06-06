@@ -1,6 +1,6 @@
-package com.dominick.freecell.game;
+package com.dominick.games.freecell;
 
-import com.dominick.freecell.cards.Card;
+import com.dominick.cards.Card;
 
 import java.util.ArrayList;
 import java.util.List;
