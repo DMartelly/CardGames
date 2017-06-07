@@ -1,6 +1,8 @@
 package com.dominick.games.poker;
 
 import com.dominick.cards.Card;
+import com.dominick.cards.Rank;
+import com.dominick.cards.Suit;
 
 import java.util.*;
 
@@ -15,7 +17,7 @@ public class PlayerHand {
     private Hand hand;
 
 
-    public PlayerHand(HashSet<Card> cards) {
+    PlayerHand(Set<Card> cards) {
         this.cards = cards;
         canRedraw = true;
         evaluateCurrentHand();
@@ -40,10 +42,36 @@ public class PlayerHand {
         //Royal Flush
         if (isFlush && hasHighStraight()) {
             hand = Hand.ROYAL_FLUSH;
+            return;
         }
+        //Straight Flush
         if (isFlush && isStraight) {
             hand = Hand.STRAIGHT_FLUSH;
+            return;
         }
+        //Four of a kind
+        Iterator<Card> itr = cards.iterator();
+        Rank firstCardRank = itr.next().getRank();
+        Rank secondCardRank = itr.next().getRank();
+        for (int i = 0; i < Suit.values().length; i++) {
+            if (!cards.contains(new Card(firstCardRank.getValue(), i))) {
+                break;
+            }
+            if (i == Suit.values().length - 1) {
+                hand = Hand.FOUR_OF_A_KIND;
+                return;
+            }
+        }
+        for (int i = 0; i < Suit.values().length; i++) {
+            if (!cards.contains(new Card(secondCardRank.getValue(), i))) {
+                break;
+            }
+            if (i == Suit.values().length - 1) {
+                hand = Hand.FOUR_OF_A_KIND;
+                return;
+            }
+        }
+        hand = Hand.HIGH_CARD;
     }
 
     private boolean hasHighStraight() {
@@ -53,7 +81,8 @@ public class PlayerHand {
 
     private boolean containsRank(int rank) {
         for (int i = 0; i < 4; i++) {
-            if (cards.contains(new Card(rank, i))) {
+            final Card temp = new Card(rank, i);
+            if (cards.contains(temp)) {
                 return true;
             }
         }
@@ -86,7 +115,12 @@ public class PlayerHand {
         return canRedraw;
     }
 
-    public Hand getHand() {
+    Hand getHand() {
         return hand;
+    }
+
+    @Override
+    public String toString() {
+        return hand.toString();
     }
 }

@@ -77,6 +77,12 @@ public class Card implements Comparable<Card> {
         return rank;
     }
 
+
+    @Override
+    public int hashCode() {
+        return this.getRank().getValue() + this.getSuit().ordinal() * 15;
+    }
+
     @Override
     public String toString() {
         return this.getRank().toString() + "" + this.getSuit().toString();
