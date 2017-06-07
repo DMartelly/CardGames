@@ -5,7 +5,7 @@ package com.dominick.cards;
  *
  * @author Dominick Martelly
  */
-public class Card {
+public class Card implements Comparable<Card> {
     private Suit suit;
     private Rank rank;
 
@@ -80,5 +80,12 @@ public class Card {
     @Override
     public String toString() {
         return this.getRank().toString() + "" + this.getSuit().toString();
+    }
+
+    @Override
+    public int compareTo(Card card) {
+        if (this.getRank() == card.getRank()) {
+            return this.getSuit().compareTo(card.getSuit());
+        } else return this.getRank().compareTo(card.getRank());
     }
 }

@@ -5,8 +5,8 @@ package com.dominick.cards;
  *
  * @author Dominick Martelly
  */
-public enum Suit {
-    HEART(true, 'H'), SPADE(false, 'S'), DIAMOND(true, 'D'), CLUBS(false, 'C');
+public enum Suit implements Comparable<Suit> {
+    CLUBS(false, 'C'), DIAMOND(true, 'D'), HEART(true, 'H'), SPADE(false, 'S');
 
     private final boolean isRED;
     private final char displayCharacter;
