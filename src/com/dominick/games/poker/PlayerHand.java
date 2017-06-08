@@ -20,7 +20,7 @@ public class PlayerHand {
     PlayerHand(Set<Card> cards) {
         this.cards = cards;
         canRedraw = true;
-        evaluateCurrentHand();
+        hand = evaluateCurrentHand();
     }
 
     public PlayerHand(Card c1, Card c2, Card c3, Card c4, Card c5) {
@@ -33,23 +33,24 @@ public class PlayerHand {
         canRedraw = true;
     }
 
-    private void evaluateCurrentHand() {
+    private Hand evaluateCurrentHand() {
         if (cards.size() != 5) {
-            return;
+            return null;
         }
         boolean isFlush = hasSameSuit();
         boolean isStraight = hasHighStraight() || hasStraight();
         //Royal Flush
         if (isFlush && hasHighStraight()) {
-            hand = Hand.ROYAL_FLUSH;
-            return;
+            return Hand.ROYAL_FLUSH;
         }
         //Straight Flush
         if (isFlush && isStraight) {
-            hand = Hand.STRAIGHT_FLUSH;
-            return;
+            return Hand.STRAIGHT_FLUSH;
         }
         //Four of a kind
+        if (ofAKind(new ArrayList<>(cards), 4)) {
+            return Hand.FOUR_OF_A_KIND;
+        }
         Iterator<Card> itr = cards.iterator();
         Rank firstCardRank = itr.next().getRank();
         Rank secondCardRank = itr.next().getRank();
@@ -58,8 +59,7 @@ public class PlayerHand {
                 break;
             }
             if (i == Suit.values().length - 1) {
-                hand = Hand.FOUR_OF_A_KIND;
-                return;
+                return Hand.FOUR_OF_A_KIND;
             }
         }
         for (int i = 0; i < Suit.values().length; i++) {
@@ -67,11 +67,27 @@ public class PlayerHand {
                 break;
             }
             if (i == Suit.values().length - 1) {
-                hand = Hand.FOUR_OF_A_KIND;
-                return;
+                return Hand.FOUR_OF_A_KIND;
             }
         }
-        hand = Hand.HIGH_CARD;
+        //Full House
+
+        return Hand.HIGH_CARD;
+    }
+
+    private boolean ofAKind(List<Card> cards, int size) {
+        if (cards.size() < size) {
+            return false;
+        }
+        if (size > 4 || size < 2)
+            return false;
+        List<Card> temp = new ArrayList<>(cards);
+        Collections.sort(temp);
+        for (int i = 0; i < 6 - size; i++) {
+            Card first = cards.get(0);
+        }
+
+        return false;
     }
 
     private boolean hasHighStraight() {
