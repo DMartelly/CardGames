@@ -79,6 +79,15 @@ public class Card implements Comparable<Card> {
 
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Card)) {
+            return false;
+        }
+        Card card = (Card) obj;
+        return this.getRank() == card.getRank() && this.getSuit() == card.getSuit();
+    }
+
+    @Override
     public int hashCode() {
         return this.getRank().getValue() + this.getSuit().ordinal() * 15;
     }
