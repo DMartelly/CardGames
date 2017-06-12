@@ -1,8 +1,6 @@
 package com.dominick.games.poker;
 
 import com.dominick.cards.Card;
-import com.dominick.cards.Rank;
-import com.dominick.cards.Suit;
 
 import java.util.*;
 
@@ -34,7 +32,8 @@ public class PlayerHand {
     }
 
     private Hand evaluateCurrentHand() {
-        if (cards.size() != 5) {
+        final int sizeOfHand = cards.size();
+        if (sizeOfHand != 5) {
             return null;
         }
         boolean isFlush = hasSameSuit();
@@ -48,34 +47,40 @@ public class PlayerHand {
             return Hand.STRAIGHT_FLUSH;
         }
         //Four of a kind
-        if (ofAKind(new ArrayList<>(cards), 4)) {
+        if (ofAKind(cards, 4)) {
             return Hand.FOUR_OF_A_KIND;
         }
-        Iterator<Card> itr = cards.iterator();
-        Rank firstCardRank = itr.next().getRank();
-        Rank secondCardRank = itr.next().getRank();
-        for (int i = 0; i < Suit.values().length; i++) {
-            if (!cards.contains(new Card(firstCardRank.getValue(), i))) {
-                break;
-            }
-            if (i == Suit.values().length - 1) {
-                return Hand.FOUR_OF_A_KIND;
-            }
-        }
-        for (int i = 0; i < Suit.values().length; i++) {
-            if (!cards.contains(new Card(secondCardRank.getValue(), i))) {
-                break;
-            }
-            if (i == Suit.values().length - 1) {
-                return Hand.FOUR_OF_A_KIND;
-            }
-        }
-        //Full House
+        //Flush
+        if (isFlush)
+            return Hand.FLUSH;
 
-        return Hand.HIGH_CARD;
+        //Straight
+        if (isStraight)
+            return Hand.STRAIGHT;
+
+        //Three of a kind
+        final boolean hasThreeOfAKind = ofAKind(cards, 3);
+
+        //Two Pair and Full House
+        ArrayList<Card> temp = new ArrayList<>(cards);
+        boolean onePair = false;
+        for (int i = 0; i < sizeOfHand - 1; i++) {
+            Card c2 = temp.get(i);
+            for (int j = i + 1; j < sizeOfHand; j++) {
+                if (c2.getRank() == temp.get(j).getRank()) {
+                    if (onePair) {
+                        return hasThreeOfAKind ? Hand.FULL_HOUSE : Hand.TWO_PAIR;
+                    } else {
+                        onePair = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return onePair ? Hand.ONE_PAIR : Hand.HIGH_CARD;
     }
 
-    private boolean ofAKind(List<Card> cards, int size) {
+    private boolean ofAKind(Set<Card> cards, int size) {
         if (cards.size() < size) {
             return false;
         }
@@ -84,9 +89,18 @@ public class PlayerHand {
         List<Card> temp = new ArrayList<>(cards);
         Collections.sort(temp);
         for (int i = 0; i < 6 - size; i++) {
-            Card first = cards.get(0);
+            Card first = temp.get(i);
+            boolean found = true;
+            for (int j = i; j < size + i; j++) {
+                if (!temp.get(j).getRank().equals(first.getRank())) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return true;
+            }
         }
-
         return false;
     }
 
