@@ -21,6 +21,9 @@ class FreeCell {
         for (int i = 0; i < 8; i++) {
             playingField.add(new CardStack());
         }
+        for (int i = 0; i < 4; i++) {
+            foundations.add(new FoundationStack());
+        }
     }
 
     void newGame(long gameNumber) {
@@ -112,8 +115,18 @@ class FreeCell {
             System.out.println("No Card Found");
         }
         Card currCard = playingField.get(column).peek();
-        if (foundations.get(foundation).pushCard(currCard)) {
-            playingField.get(column).pop();
+        final int suitNumber = currCard.getSuit().ordinal();
+        if (foundations.get(suitNumber).isEmpty()) {
+            if (currCard.getRank().getValue() == 0) {
+                foundations.get(foundation).pushCard(currCard);
+                playingField.get(column).pop();
+                return true;
+            } else {
+                System.out.println("Need an Ace first");
+                return false;
+            }
+        } else if (foundations.get(suitNumber).peek().getRank().getValue() + 1 == currCard.getRank().getValue()) {
+            foundations.get(suitNumber).push(playingField.get(column).pop());
             return true;
         }
         return false;
