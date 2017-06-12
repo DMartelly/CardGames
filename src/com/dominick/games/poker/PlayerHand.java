@@ -21,7 +21,7 @@ public class PlayerHand {
         hand = evaluateCurrentHand();
     }
 
-    public PlayerHand(Card c1, Card c2, Card c3, Card c4, Card c5) {
+    PlayerHand(Card c1, Card c2, Card c3, Card c4, Card c5) {
         cards = new HashSet<>(5);
         cards.add(c1);
         cards.add(c2);
@@ -29,6 +29,7 @@ public class PlayerHand {
         cards.add(c4);
         cards.add(c5);
         canRedraw = true;
+        hand = evaluateCurrentHand();
     }
 
     private Hand evaluateCurrentHand() {
@@ -147,6 +148,23 @@ public class PlayerHand {
 
     Hand getHand() {
         return hand;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PlayerHand)) {
+            return false;
+        }
+        PlayerHand playerHand = (PlayerHand) obj;
+        if (cards.size() != playerHand.cards.size()) {
+            return false;
+        }
+        for (Card card : cards) {
+            if (!playerHand.cards.contains(card)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

@@ -2,12 +2,10 @@ package com.dominick.games.poker;
 
 import com.dominick.cards.Card;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Created by Dominick on 6/7/2017.
@@ -42,7 +40,7 @@ public class PlayerHandTest {
         myCards.add(new Card(0, 0));
         PlayerHand myHand = new PlayerHand(myCards);
 
-        assertEquals("getHand_2_RoyalFlush Failed", Hand.ROYAL_FLUSH, myHand.getHand());
+        assertEquals(Hand.ROYAL_FLUSH, myHand.getHand());
     }
 
     @org.junit.Test
@@ -55,7 +53,7 @@ public class PlayerHandTest {
         myCards.add(new Card(5, 1));
         PlayerHand myHand = new PlayerHand(myCards);
 
-        assertEquals("getHand_3_StraightFlush Failed", Hand.STRAIGHT_FLUSH, myHand.getHand());
+        assertEquals(Hand.STRAIGHT_FLUSH, myHand.getHand());
     }
 
     @org.junit.Test
@@ -68,7 +66,7 @@ public class PlayerHandTest {
         myCards.add(new Card(9, 0));
         PlayerHand myHand = new PlayerHand(myCards);
 
-        assertEquals("getHand_4_FourOfAKind Failed", Hand.FOUR_OF_A_KIND, myHand.getHand());
+        assertEquals(Hand.FOUR_OF_A_KIND, myHand.getHand());
     }
 
     @org.junit.Test
@@ -81,7 +79,7 @@ public class PlayerHandTest {
         myCards.add(new Card(1, 0));
         PlayerHand myHand = new PlayerHand(myCards);
 
-        assertEquals("getHand_5_FullHouse Failed", Hand.FULL_HOUSE, myHand.getHand());
+        assertEquals(Hand.FULL_HOUSE, myHand.getHand());
     }
 
     @org.junit.Test
@@ -94,7 +92,7 @@ public class PlayerHandTest {
         myCards.add(new Card(3, 0));
         PlayerHand myHand = new PlayerHand(myCards);
 
-        assertEquals("getHand_6_Straight Failed", Hand.STRAIGHT, myHand.getHand());
+        assertEquals(Hand.STRAIGHT, myHand.getHand());
     }
 
 
@@ -108,27 +106,96 @@ public class PlayerHandTest {
         myCards.add(new Card(10, 0));
         PlayerHand myHand = new PlayerHand(myCards);
 
-        assertEquals("getHand_7_Flush Failed", Hand.FLUSH, myHand.getHand());
+        assertEquals(Hand.FLUSH, myHand.getHand());
+    }
+
+    @org.junit.Test
+    public void equals_1() throws Exception {
+        Set<Card> myCards = new HashSet<>();
+        myCards.add(new Card(10, 3));
+        myCards.add(new Card(0, 1));
+        myCards.add(new Card(13, 0));
+        myCards.add(new Card(1, 0));
+        myCards.add(new Card(7, 0));
+        PlayerHand myHand = new PlayerHand(myCards);
+
+        Set<Card> myCards2 = new HashSet<>();
+        myCards2.add(new Card(1, 0));
+        myCards2.add(new Card(13, 0));
+        myCards2.add(new Card(7, 0));
+        myCards2.add(new Card(0, 1));
+        myCards2.add(new Card(10, 3));
+        PlayerHand myHand2 = new PlayerHand(myCards2);
+
+        assertEquals(myHand2, myHand);
+    }
+
+    @org.junit.Test
+    public void equals_2() throws Exception {
+        Set<Card> myCards = new HashSet<>();
+        myCards.add(new Card(13, 0));
+        myCards.add(new Card(0, 1));
+        myCards.add(new Card(1, 0));
+        myCards.add(new Card(7, 0));
+        myCards.add(new Card(10, 0));
+        PlayerHand myHand = new PlayerHand(myCards);
+
+        Set<Card> myCards2 = new HashSet<>();
+        myCards2.add(new Card(1, 0));
+        myCards2.add(new Card(13, 0));
+        myCards2.add(new Card(7, 0));
+        myCards2.add(new Card(0, 0));
+        myCards2.add(new Card(10, 0));
+        PlayerHand myHand2 = new PlayerHand(myCards2);
+
+        assertNotEquals(myHand2, myHand);
     }
 
     @org.junit.Test
     public void allPossibleOdds() throws Exception {
 
         Iterator<PlayerHand> allPossibleHands = allPossibleHands().iterator();
-        int HighCard = 0;
+        int highCard = 0, pair = 0, royalFlush = 0;
         while (allPossibleHands.hasNext()) {
             switch (allPossibleHands.next().getHand().getValue()) {
-                case 0:
-                    HighCard++;
+                case 10:
+                    highCard++;
+                    break;
+                case 9:
+                    pair++;
+                    break;
+                case 1:
+                    royalFlush++;
+                default:
+                    break;
             }
         }
 
-        assertEquals("Possible High Cards", 1302540, HighCard);
+        assertEquals(4, royalFlush);
+        assertEquals(1098240, pair);
+        assertEquals("Num of High Cards is incorrect", 1302540, highCard);
     }
 
     private Set<PlayerHand> allPossibleHands() {
         Set<PlayerHand> set = new HashSet<>();
-
+        List<Card> allCards = new ArrayList<>();
+        for (int rank = 0; rank < 13; rank++) {
+            for (int suit = 0; suit < 4; suit++) {
+                allCards.add(new Card(rank, suit));
+            }
+        }
+        for (int i = 0; i < allCards.size() - 4; i++) {
+            for (int j = i + 1; j < allCards.size() - 3; j++) {
+                for (int k = j + 1; k < allCards.size() - 2; k++) {
+                    for (int l = k + 1; l < allCards.size() - 1; l++) {
+                        for (int m = l + 1; m < allCards.size(); m++) {
+                            set.add(new PlayerHand(allCards.get(i), allCards.get(j),
+                                    allCards.get(k), allCards.get(l), allCards.get(m)));
+                        }
+                    }
+                }
+            }
+        }
         return set;
     }
 
