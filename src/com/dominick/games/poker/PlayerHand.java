@@ -13,12 +13,14 @@ public class PlayerHand {
     private Set<Card> cards;
     private boolean canRedraw;
     private Hand hand;
+    private Card highCard;
 
 
     PlayerHand(Set<Card> cards) {
         this.cards = cards;
         canRedraw = true;
         hand = evaluateCurrentHand();
+        highCard = evaluateHighCard();
     }
 
     PlayerHand(Card c1, Card c2, Card c3, Card c4, Card c5) {
@@ -30,6 +32,29 @@ public class PlayerHand {
         cards.add(c5);
         canRedraw = true;
         hand = evaluateCurrentHand();
+        highCard = evaluateHighCard();
+    }
+
+    private Card evaluateHighCard() {
+        if (hand == Hand.ROYAL_FLUSH)
+            return new Card(0, 0);
+        if (hand == Hand.HIGH_CARD || hand == Hand.FLUSH || hand == Hand.STRAIGHT || hand == Hand.STRAIGHT_FLUSH)
+            return highestCard();
+        return null;
+    }
+
+    private Card highestCard() {
+        final Iterator<Card> cardIterator = cards.iterator();
+        Card result = null;
+        while (cardIterator.hasNext()) {
+            final Card card = cardIterator.next();
+            if (result == null)
+                result = card;
+            else {
+                result = result.compareTo(card) >= 0 ? result : card;
+            }
+        }
+        return result;
     }
 
     private Hand evaluateCurrentHand() {

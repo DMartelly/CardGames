@@ -95,7 +95,6 @@ public class PlayerHandTest {
         assertEquals(Hand.STRAIGHT, myHand.getHand());
     }
 
-
     @org.junit.Test
     public void getHand_7_Flush() throws Exception {
         Set<Card> myCards = new HashSet<>();
@@ -107,6 +106,19 @@ public class PlayerHandTest {
         PlayerHand myHand = new PlayerHand(myCards);
 
         assertEquals(Hand.FLUSH, myHand.getHand());
+    }
+
+    @org.junit.Test
+    public void getHand_8_ThreeOfAKind() throws Exception {
+        Set<Card> myCards = new HashSet<>();
+        myCards.add(new Card(13, 3));
+        myCards.add(new Card(1, 0));
+        myCards.add(new Card(1, 2));
+        myCards.add(new Card(10, 0));
+        myCards.add(new Card(1, 1));
+        PlayerHand myHand = new PlayerHand(myCards);
+
+        assertEquals(Hand.THREE_OF_A_KIND, myHand.getHand());
     }
 
     @org.junit.Test
